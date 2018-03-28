@@ -49,9 +49,9 @@ if __name__ == '__main__':
 
         if not user_data['suspended_at']:
             if user_data['email']:
-                unsuspended_emails.append(user_data['email'])
+                unsuspended_emails.append('bcc:' + user_data['email'])
             else:
                 default_email = "%s@oregonstate.edu" % user
-                unsuspended_emails.append(default_email)
+                unsuspended_emails.append('bcc:' + default_email)
 
     print(', '.join(unsuspended_emails))
