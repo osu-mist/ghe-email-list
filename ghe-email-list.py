@@ -40,7 +40,6 @@ if __name__ == '__main__':
     unsuspended_emails = []
 
     for user in usernames:
-        print("-----Processing: %s-----" % user)
         user_response = requests.get(
                 "%s/%s" % (users_endpoint, user),
                 auth=(None, token)
@@ -49,15 +48,10 @@ if __name__ == '__main__':
         user_data = user_response.json()
 
         if not user_data['suspended_at']:
-            print("Not suspended")
             if user_data['email']:
-                print("Has public email")
-                unsuspended_emails.append(user_data['email'])
+                unsuspended_emails.append('bcc:' + user_data['email'])
             else:
                 default_email = "%s@oregonstate.edu" % user
-                print("No public email, defaulting to %s" % default_email)
-                unsuspended_emails.append(default_email)
-        else:
-            print("Suspended")
+                unsuspended_emails.append('bcc:' + default_email)
 
-    print(*unsuspended_emails, sep=', ')
+    print(', '.join(unsuspended_emails))
